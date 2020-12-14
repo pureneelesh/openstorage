@@ -2,9 +2,13 @@
 
 ## Releases
 
+### v0.106.0 - (12/14/2020)
+
+* Add a spec for defining a service endpoint for sharedv4 volumes.
+
 ### v0.105.0 - (11/17/2020)
 
-* Use destination instance ID for cloud driver transfer job 
+* Use destination instance ID for cloud driver transfer job
 
 ### v0.104.0 - (11/05/2020)
 

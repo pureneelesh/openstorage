@@ -135,6 +135,8 @@ var (
 	cowOnDemandRegex            = regexp.MustCompile(api.SpecCowOnDemand + "=([A-Za-z]+),?")
 	directIoRegex               = regexp.MustCompile(api.SpecDirectIo + "=([A-Za-z]+),?")
 	ProxyWriteRegex             = regexp.MustCompile(api.SpecProxyWrite + "=([A-Za-z]+),?")
+	sharedv4Service             = regexp.MustCompile(api.SpecSharedv4Service + "=([A-Za-z]+),?")
+	sharedv4ServiceName         = regexp.MustCompile(api.SpecSharedv4ServiceName + "=([A-Za-z]+),?")
 )
 
 type specHandler struct {
@@ -432,6 +434,16 @@ func (d *specHandler) UpdateSpecFromOpts(opts map[string]string, spec *api.Volum
 			} else {
 				spec.ProxySpec.NfsSpec.ExportPath = v
 			}
+		case api.SpecSharedv4Service:
+			if spec.Sharedv4ServiceSpec == nil {
+				spec.Sharedv4ServiceSpec = &api.Sharedv4ServiceSpec{}
+			}
+
+		case api.SpecSharedv4ServiceName:
+			if spec.Sharedv4ServiceSpec == nil {
+				spec.Sharedv4ServiceSpec = &api.Sharedv4ServiceSpec{}
+			}
+			spec.Sharedv4ServiceSpec.Name = v
 
 		case api.SpecMountOptions:
 			if spec.MountOptions == nil {
