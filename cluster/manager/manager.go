@@ -959,13 +959,17 @@ func (c *ClusterManager) updateClusterStatus() {
 				c.nodeStatuses[string(id)] = peerNodeInCache.Status
 				peerNodeCopy = peerNodeInCache.Copy()
 				notifyListenerFn = func() {
+					logrus.Infof("==== NODE_STATUS_DOWN inside notifyListenerFn with %d listeners", c.listeners.Len())
 					for e := c.listeners.Front(); e != nil && c.gEnabled; e = e.Next() {
+						logrus.Infof("==== calling listener %s", e.Value.(cluster.ClusterListener).String())
 						err := e.Value.(cluster.ClusterListener).Update(peerNodeCopy)
 						if err != nil {
 							logrus.Warnln("Failed to notify ",
 								e.Value.(cluster.ClusterListener).String())
 						}
+						logrus.Infof("==== DONE calling listener %s", e.Value.(cluster.ClusterListener).String())
 					}
+					logrus.Infof("==== NODE_STATUS_DOWN exiting notifyListenerFn with %d listeners", c.listeners.Len())
 				}
 
 			case gossipNodeInfo.Status == types.NODE_STATUS_UP:
@@ -982,12 +986,14 @@ func (c *ClusterManager) updateClusterStatus() {
 
 				peerNodeCopy = peerNodeInCache.Copy()
 				notifyListenerFn = func() {
+					logrus.Infof("==== NODE_STATUS_UP inside notifyListenerFn with %d listeners", c.listeners.Len())
 					for e := c.listeners.Front(); e != nil && c.gEnabled; e = e.Next() {
 						err := e.Value.(cluster.ClusterListener).Add(peerNodeCopy)
 						if err != nil {
 							logrus.Warnln("Failed to notify ",
 								e.Value.(cluster.ClusterListener).String())
 						}
+						logrus.Infof("==== NODE_STATUS_UP exiting notifyListenerFn with %d listeners", c.listeners.Len())
 					}
 				}
 			}
