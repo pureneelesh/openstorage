@@ -968,7 +968,7 @@ func (c *ClusterManager) updateClusterStatus() {
 							logrus.Infof("==== calling listener %s", listener.String())
 							err := listener.Update(peerNodeCopy)
 							if err != nil {
-								logrus.Warnln("Failed to notify ", listener.String())
+								logrus.Warnf("Failed to notify %s: %v", listener.String(), err)
 							}
 							logrus.Infof("==== DONE calling listener %s", listener.String())
 						}(e.Value.(cluster.ClusterListener))
@@ -996,8 +996,8 @@ func (c *ClusterManager) updateClusterStatus() {
 					for e := c.listeners.Front(); e != nil && c.gEnabled; e = e.Next() {
 						err := e.Value.(cluster.ClusterListener).Add(peerNodeCopy)
 						if err != nil {
-							logrus.Warnln("Failed to notify ",
-								e.Value.(cluster.ClusterListener).String())
+							logrus.Warnf("Failed to notify %s: %v",
+								e.Value.(cluster.ClusterListener).String(), err)
 						}
 						logrus.Infof("==== NODE_STATUS_UP exiting notifyListenerFn with %d listeners", c.listeners.Len())
 					}
